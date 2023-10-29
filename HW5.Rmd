@@ -1,0 +1,53 @@
+---
+title: "HW 5"
+output: html_document
+date: "2023-10-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(fpp)
+library(fpp2)
+
+library(readxl)
+airtraffic <- read_excel("/Users/jasperyeh/Downloads/Air_Traffic_Passenger_Statistics.xlsx")
+
+head(airtraffic)
+plot(airtraffic$`Passenger Count`)
+
+data1 <- ts(airtraffic $`Passenger Count`,frequency = 12)
+stl_decomp1 <- stl(data1,s.window = "periodic")
+plot(stl_decomp1)
+attributes(stl_decomp1)
+
+seasadj(stl_decomp1)
+plot(airtraffic$`Passenger Count`)
+lines(seasadj(stl_decomp1), col="Red")
+
+f_stl1 <- forecast(stl_decomp1)
+f_stl1 <- forecast(stl_decomp1,h=15)
+f_stl1
+
+decomp_air <- decompose(data1)
+attributes(decomp_air)
+seasadj(decomp_air)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
